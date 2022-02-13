@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block sidebar %}
+<div class="list-group">
+  {% include 'inc/_sidebar.html' %}
+</div>
+{% endblock %}
+
+{% block content %}
+  <div class="row">
+      <div class="">
+    {% for news_item in newsAll %}
+    <div class="card mb-3">
+      <div class="card-header">
+        {{forloop.counter}}.
+                Категория: <a href="{{ news_item.category.get_absolute_url }}">{{ news_item.category }}</a>
+      </div>
+      <div class="col-mt-3">
+      <div class="card-body">
+        <div class="media">
+          <div class="media-body">
+            {% if news_item.photo %}
+                  <img src="{{ news_item.photo.url }}" width="300px">
+            {% else %}
+                 <img src="https://www.escogroup.com/wwwroot/sites/default/files/2017-10/default-placeholder_2.png" width="300px">
+            {% endif %}
+        <h5 class="card-title {% cycle 'text-success'  'text-danger' %}">{{ news_item.title }}</h5>
+        <p class="card-text">
+          {{ news_item.content }}</p>
+        <a href="{{ news_item.get_absolute_url }}" class="btn btn-info">Читать далее</a>
+      </div>
+        </div>
+      </div>
+      <div class="card-footer text-muted">
+        {{ news_item.created_date|date:"Y:m-d H:i" }}
+      </div>
+    </div>
+    {% endfor %}
+    </div>
+      </div>
+  </div>
+
+
+{% endblock %}
+
