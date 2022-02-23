@@ -1,5 +1,6 @@
 from django import template
 from django.db.models import *
+
 from firsrapp.models import Category, News
 
 register = template.Library()
@@ -7,10 +8,13 @@ register = template.Library()
 
 @register.simple_tag()
 def find_category():
-    categories = Category.objects.annotate(cnt=Count('title')).filter(cnt__gt=0)
-    return Category.objects.all()
+    allCategories = Category.objects.all()
+    categories = Category.objects.annotate(cnt=Count('news')).filter(cnt__gt=0)
+    return categories
 
 
-@register.simple_tag()
+@register.inclusion_tag('firstapp/list_categories.html')
 def show_categories():
-    categories = Category.objects.annotate(cnt=Count('title')).filter(cnt__gt=0)
+    categories = Category.objects.all()
+
+    return {"categories": categories}
