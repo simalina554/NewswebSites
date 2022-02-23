@@ -1,8 +1,4 @@
-
 {% extends 'base.html' %}
-{% block title %}
-    Тестовая страница
-{% endblock %}
 {% block sidebar %}
 
 <!--            <div class="list-group">-->
@@ -11,13 +7,11 @@
 
 {% endblock %}
 {% block content %}
-
-<h1>Обратная связь</h1>
-<form method = "POST">
+<h1>Авторизация</h1>
+<form method = "post">
     {% csrf_token %}
     {{ form.as_p }}
 
-    <button type="submit" class="btn btn-primary btn-block">Отправить</button>
+    <button type="submit" class="btn btn-primary btn-block">Авторизоваться</button>
 </form>
-
-{% endblock  %}
+{% endblock %}
