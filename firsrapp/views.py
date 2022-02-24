@@ -1,16 +1,15 @@
 from django.contrib import messages
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, Http404
-from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView
-from .models import *
-from .utils import *
+from django.urls import reverse_lazy
+from .utils import MyMixin
 from django.contrib.auth.mixins import LoginRequiredMixin as lrg
 from django.core.paginator import Paginator
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from .forms import *
 from django.contrib.auth import login, logout
 from django.core.mail import send_mail
+from .models import *
+from .forms import *
 
 
 # Create your views here.
@@ -50,26 +49,15 @@ def userlogout(request):
 
 
 def test(request):
-    if request.method == 'POST':
-        form = ContactForm(request.POST)
-        if form.is_valid():
-            mail = send_mail(form.cleaned_data['subjects'], form.cleaned_data['content'], 'test@gmail.com', ['simalina554@gmail.com'], fail_silently=False)
-            if mail:
-                messages.success(request, 'Письмо отправлено')
-
-        else:
-            messages.error(request, 'Ошибка!')
-    else:
-        form = ContactForm()
-        return render(request, 'firsrapp/test.html', {"form": form})
+    pass
 
 
 # def test(request):
-    # objects = ['john1', 'paul2', 'george3', 'ringo4', 'john5', 'paul6', 'george7', 'ringo8']
-    # paginator = Paginator(objects, 2)
-    # page_num = request.GET.get('page', 1)
-    # page_objects = paginator.get_page(page_num)
-    # return render(request, 'firsrapp/test.html', {'page_objects': page_objects})
+# objects = ['john1', 'paul2', 'george3', 'ringo4', 'john5', 'paul6', 'george7', 'ringo8']
+# paginator = Paginator(objects, 2)
+# page_num = request.GET.get('page', 1)
+# page_objects = paginator.get_page(page_num)
+# return render(request, 'firsrapp/test.html', {'page_objects': page_objects})
 
 
 class HomePage(MyMixin, ListView):
@@ -111,9 +99,22 @@ def about(request):
 
 
 def contact(request):
-    title = 'Страница для связи с нами'
-    content = {'title': title, }
-    return render(request, template_name="firsrapp/about.html", context=content)
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            mail = send_mail(form.cleaned_data['subject'], form.cleaned_data['content'], 'djangobekov2022@gmail.com',
+                             ['simalina554@gmail.com'], fail_silently=False)
+            if mail:
+                messages.success(request, 'Письмо отправлено')
+            else:
+                messages.error(request, 'Ошибка отправки письма!')
+
+        else:
+            messages.error(request, 'Ошибка!')
+    else:
+        form = ContactForm()
+
+    return render(request, 'firsrapp/contactus.html', {"form": form})
 
 
 def views_news(request, news_id):
