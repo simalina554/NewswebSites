@@ -1,5 +1,23 @@
-{% extends 'base.html' %}
 
+{% extends 'base.html' %}
 {% block title %}
-     {{ title }}
+Отправка письма
 {% endblock %}
+{% block sidebar %}
+
+<!--            <div class="list-group">-->
+<!--            {% include 'inc/_sidebar.html' %}-->
+<!--            </div>-->
+
+{% endblock %}
+{% block content %}
+
+<h1>Обратная связь</h1>
+<form method = "POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <button type="submit" class="btn btn-primary btn-block">Отправить</button>
+</form>
+
+{% endblock  %}

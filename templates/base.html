@@ -27,8 +27,9 @@
                   {% endif %}
               {% endfor %}
             {% endif %}
-
+            {% autoescape off %}
         {% block content %} CONTENT {% endblock %}
+            {% endautoescape %}
             </div>
             </div>
             {% if page_obj.has_other_pages %}
